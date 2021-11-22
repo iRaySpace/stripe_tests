@@ -36,8 +36,7 @@ Route.post('/get_upcoming_invoice', async ({ request, response }) => {
     const invoice = await stripe.invoices.retrieveUpcoming({ customer, subscription })
     return invoice
   } catch (err) {
-    console.log(err)
-    return response.status(500)
+    return response.status(500).send({ detail: err.code })
   }
 })
 

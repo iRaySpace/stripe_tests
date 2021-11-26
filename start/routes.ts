@@ -74,3 +74,22 @@ Route.post('/get_invoices', async ({ request, response }) => {
     return response.status(500)
   }
 })
+
+Route.post('/downgrade_subscription', async ({ request, response }) => {
+  const { subscription, quantity } = request.body()
+  try {
+    const existingSubscription = await stripe.subscriptions.retrieve(subscription);
+    const firstItem = existingSubscription.items.data[0];
+    const updatedSubscription = await stripe.subscriptions.update(existingSubscription.id, {
+      proration_behavior: 'none',
+      items: [{
+        id: firstItem.id,
+        quantity,
+      }]
+    });
+    return updatedSubscription;
+  } catch (err) {
+    console.log(err)
+    return response.status(500)
+  }
+})

@@ -22,7 +22,7 @@ import Route from "@ioc:Adonis/Core/Route";
 import Env from "@ioc:Adonis/Core/Env";
 import Stripe from "stripe";
 
-const stripe = new Stripe(Env.get("STRIPE_KEY"), {
+const stripe = new Stripe(Env.get("STRIPE_TEST_KEY"), {
   apiVersion: "2020-08-27",
 });
 

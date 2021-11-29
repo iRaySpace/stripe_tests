@@ -84,8 +84,8 @@ Route.post("/get_invoices", async ({ request, response }) => {
   }
 });
 
-Route.post("/downgrade_subscription", async ({ request, response }) => {
-  const { subscription, quantity } = request.body();
+Route.post("/update_subscription", async ({ request, response }) => {
+  const { subscription, quantity, price } = request.body();
   try {
     const existingSubscription = await stripe.subscriptions.retrieve(
       subscription
@@ -99,6 +99,7 @@ Route.post("/downgrade_subscription", async ({ request, response }) => {
           {
             id: firstItem.id,
             quantity,
+            price,
           },
         ],
       }

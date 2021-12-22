@@ -84,6 +84,17 @@ Route.post("/get_invoices", async ({ request, response }) => {
   }
 });
 
+Route.post("/get_invoice_item", async ({ request, response }) => {
+  const { id } = request.body();
+  try {
+    const data = await stripe.invoiceItems.retrieve(id);
+    return data;
+  } catch (err) {
+    console.log(err);
+    return response.status(500);
+  }
+});
+
 Route.post("/update_subscription", async ({ request, response }) => {
   const { subscription, quantity, price } = request.body();
   try {
@@ -105,6 +116,17 @@ Route.post("/update_subscription", async ({ request, response }) => {
       }
     );
     return updatedSubscription;
+  } catch (err) {
+    console.log(err);
+    return response.status(500);
+  }
+});
+
+Route.post("/update_invoice_item", async ({ request, response }) => {
+  const { id, quantity } = request.body();
+  try {
+    const updatedInvoiceItem = await stripe.invoiceItems.update(id, { quantity });
+    return updatedInvoiceItem;
   } catch (err) {
     console.log(err);
     return response.status(500);

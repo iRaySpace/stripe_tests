@@ -95,6 +95,17 @@ Route.post("/get_invoice_item", async ({ request, response }) => {
   }
 });
 
+Route.post("/get_invoice_line_items", async ({ request, response }) => {
+  const { id } = request.body();
+  try {
+    const data = await stripe.invoices.listLineItems(id);
+    return data;
+  } catch (err) {
+    console.log(err);
+    return response.status(500);
+  }
+});
+
 Route.post("/update_subscription", async ({ request, response }) => {
   const { subscription, quantity, price } = request.body();
   try {

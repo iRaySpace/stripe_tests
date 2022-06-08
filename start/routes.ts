@@ -143,3 +143,14 @@ Route.post("/update_invoice_item", async ({ request, response }) => {
     return response.status(500);
   }
 });
+
+Route.post("/finalize_invoice", async ({ request, response }) => {
+  const { invoice } = request.body();
+  try {
+    const updatedInvoice = await stripe.invoices.finalizeInvoice(invoice);
+    return updatedInvoice;
+  } catch (err) {
+    console.log(err);
+    return response.status(500);
+  }
+});

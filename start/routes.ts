@@ -156,13 +156,15 @@ Route.post("/finalize_invoice", async ({ request, response }) => {
 });
 
 Route.post("/make_invoice", async ({ request, response }) => {
-  const { customer, description, amount, currency } = request.body();
+  const { customer, description, amount, currency, period, metadata } = request.body();
   try {
     await stripe.invoiceItems.create({
       customer,
       amount,
       description,
       currency,
+      period,
+      metadata,
     });
     const invoice = await stripe.invoices.create({
       customer,

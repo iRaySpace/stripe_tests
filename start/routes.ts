@@ -154,3 +154,24 @@ Route.post("/finalize_invoice", async ({ request, response }) => {
     return response.status(500);
   }
 });
+
+Route.post("/make_invoice", async ({ request, response }) => {
+  const { customer, description, amount, currency } = request.body();
+  try {
+    await stripe.invoiceItems.create({
+      customer,
+      amount,
+      description,
+      currency,
+    });
+    const invoice = await stripe.invoices.create({
+      customer,
+      collection_method: "send_invoice",
+      days_until_due: 1,
+    });
+    return invoice;
+  } catch (err) {
+    console.log(err);
+    return response.status(500);
+  }
+});

@@ -43,6 +43,19 @@ Route.post("/get_upcoming_invoice", async ({ request, response }) => {
   }
 });
 
+Route.post("/get_upcoming_invoice_lines", async ({ request, response }) => {
+  const { customer, subscription } = request.body();
+  try {
+    const invoice = await stripe.invoices.listUpcomingLineItems({
+      customer,
+      subscription,
+    });
+    return invoice;
+  } catch (err) {
+    return response.status(500).send({ detail: err.code });
+  }
+});
+
 Route.post("/pay_invoice", async ({ request, response }) => {
   const { invoice } = request.body();
   try {
